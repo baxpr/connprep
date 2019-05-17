@@ -6,7 +6,7 @@ run \
 --home `pwd`/INPUTS \
 --bind INPUTS:/INPUTS \
 --bind OUTPUTS:/OUTPUTS \
-baxpr-fmriqa-master-v4.2.0.simg \
+baxpr-connprep-master-v1.0.0.simg \
 /OUTPUTS \
 /INPUTS/t1.nii.gz \
 /INPUTS/seg.nii.gz \

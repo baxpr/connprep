@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bash run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function fmriqa \
+bash run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function connprep \
 ../OUTPUTS \
 ../INPUTS/t1.nii.gz \
 ../INPUTS/seg.nii.gz \
