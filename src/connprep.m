@@ -1,14 +1,18 @@
-function fmri_conncalc(varargin)
+function connprep(varargin)
 
 
 %% Parse inputs
-% We'll run the jsins version by default
 P = inputParser;
-addOptional(P,'magick_path','/usr/bin');
-addOptional(P,'param_file',which('params_JSins.csv'));
-addOptional(P,'wroi_file',which('rois_JSins.nii.gz'));
-addOptional(P,'roi_file',[]);
-addOptional(P,'roiinfo_file',which('rois_JSins.csv'));
+addOptional(P,'num_initial_vols_to_drop','0')
+addOptional(P,'num_vols_to_analyze','all')
+addOptional(P,'spatialsmooth_fwhm','6')
+addOptional(P,'bandpasslo_hz','0.01')
+addOptional(P,'bandpasshi_hz','0.10')
+addOptional(P,'mot_PCs','6')
+addOptional(P,'motderiv_PCs','6')
+addOptional(P,'wmcsf_PCs','6')
+addOptional(P,'slorder','none')
+
 addOptional(P,'coregmat_file','/INPUTS/coreg_mat.txt');
 addOptional(P,'deffwd_file','/INPUTS/y_deffwd.nii.gz');
 addOptional(P,'ct1_file','/INPUTS/ct1.nii.gz');
@@ -22,19 +26,7 @@ addOptional(P,'scan','UNK_SCAN');
 addOptional(P,'out_dir','/OUTPUTS');
 parse(P,varargin{:});
 
-magick_path = P.Results.magick_path;
-param_file = which(P.Results.param_file);
-if ~isempty(P.Results.wroi_file)
-	wroi_file = which(P.Results.wroi_file);
-else
-	wroi_file = '';
-end
-roi_file = P.Results.roi_file;
-if ~isempty(P.Results.roiinfo_file)
-	roiinfo_file = which(P.Results.roiinfo_file);
-else
-	roiinfo_file = '';
-end
+
 coregmat_file = P.Results.coregmat_file;
 deffwd_file = P.Results.deffwd_file;
 ct1_file = P.Results.ct1_file;
@@ -59,30 +51,6 @@ fprintf('roi_file:     %s\n',roi_file);
 fprintf('wroi_file:    %s\n',wroi_file);
 fprintf('roiinfo_file: %s\n',roiinfo_file);
 
-
-%% Read in parameter file
-disp('Parameters')
-params = read_parameter_file(param_file,out_dir);
-
-
-%% Create a warped (atlas space) ROI file if we need to
-% Little bit of a hack gzipping the files again after so prep_files will
-% work
-if isempty(wroi_file) && ~isempty(roi_file)
-	fprintf('Warping:\n    %s\n',roi_file);
-	system(['gunzip -f ' roi_file]);
-	system(['gunzip -f ' deffwd_file]);
-	wroi_file = warp_images(deffwd_file(1:end-3),roi_file(1:end-3), ...
-		[spm('dir') '/canonical/avg152T1.nii'],0,out_dir);
-	system(['gzip -f ' roi_file(1:end-3)]);
-	system(['gzip -f ' deffwd_file(1:end-3)]);
-	system(['gzip -f ' wroi_file]);
-	wroi_file = [wroi_file '.gz'];
-elseif ~isempty(wroi_file) && isempty(roi_file)
-	fprintf('Using MNI space ROI file %s\n',wroi_file);
-else
-	error('Native space and atlas space ROI images were BOTH specified')
-end
 
 
 %% Copy files to working directory with consistent names and unzip
