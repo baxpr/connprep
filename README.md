@@ -12,4 +12,4 @@ Get volume acq time from DICOM passed in along with NIFTI? Would need to handle 
 
 Include scrubbing option?
 
-No connmat or conn image outputs.
+No connmat or conn image outputs. ... would be helpful to have a few basic conn maps shown for QA though, e.g. for the Yeo networks. masimatlab/trunk/xnatspiders/matlab/fmri_conncalc_v1_1_0/code/make_network_maps.m
