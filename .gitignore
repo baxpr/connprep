@@ -5,3 +5,4 @@ spm*.ps
 localdocker.sh
 *.simg
 *.gz
+spm12*
