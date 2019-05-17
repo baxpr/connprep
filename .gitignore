@@ -1,0 +1,7 @@
+INPUTS*
+OUTPUTS*
+spm*.ps
+*~
+localdocker.sh
+*.simg
+*.gz
