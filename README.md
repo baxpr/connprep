@@ -8,7 +8,7 @@ Follow new fmriqa v4.2 for SPM setup.
 
 Pass processing options at command line instead of param file?
 
-Get volume acq time from DICOM passed in along with NIFTI? Would need to handle PARREC as well. Check if our nifti converter uses pixdim[4] for this
+Get volume acq time from DICOM passed in along with NIFTI? Would need to handle PARREC as well. Check if our nifti converter uses pixdim[4] for this - for TCP DICOMs, yes, with whichever dcm2nii we originally used and also with v1.0.20190410. Also v1.0.20190410 appears to do this for old PARs.
 
 Include scrubbing option?
 
