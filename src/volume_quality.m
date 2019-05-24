@@ -82,9 +82,3 @@ DVARS(1) = nan;
 
 
 
-%% Compute bad volumes for scrubbing
-badvols = (FD>FDthresh) | (DVARS>DVARSthresh);
-badvols = badvols | [badvols(2:end); false];
-writetable(table(badvols),fullfile(out_dir,'badvols.txt'),'WriteVariableNames',false)
-
-
