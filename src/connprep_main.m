@@ -33,11 +33,15 @@ fprintf('Drop volumes from %s\n',fmri_nii);
 dfmri_nii = drop_volumes(fmri_nii,num_initial_vols_to_drop,num_vols_to_analyze);
 
 
+%% Find the TR
+tr = get_tr(fmri_nii);
+
+
 %% Slice timing correction
 % Slice timing correction interpolates across time, possibly polluting high
 % quality vols with artifact signal from nearby vols with high FD/DVARS
-fprintf('Slice timing correction on %s\n',dfmri_nii);
-adfmri_nii = slice_timing_correction(dfmri_nii,params);
+fprintf('Slice timing correction "%s" on %s\n',slorder,dfmri_nii);
+adfmri_nii = slice_timing_correction(dfmri_nii,tr,slorder);
 
 
 %% Realignment

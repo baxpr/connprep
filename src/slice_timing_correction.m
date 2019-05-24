@@ -1,13 +1,13 @@
-function afunc_file = slice_timing_correction(func_file,params)
+function afmri_nii = slice_timing_correction(fmri_nii,tr,slorder)
 % Slice timing correction module for connectivity preproc spider. Slice
 % timing correction is applied in the third dimension (Z, often axial).
 
 % Number of slices
-V = spm_vol(func_file);
+V = spm_vol(fmri_nii);
 nslices = V(1).dim(3);
 
 % Slice order
-switch params.slorder
+switch slorder
 	
 	case 'ascending'
 		slorder = 1:nslices;
@@ -22,10 +22,9 @@ switch params.slorder
 		slorder = [nslices:-2:1 (nslices-1):-2:1];
 
 	case 'none'
-		warning('Skipping slice timing correction')
-		[func_p,func_n,func_e] = fileparts(func_file);
-		afunc_file = fullfile(func_p,['a' func_n func_e]);
-		copyfile(func_file,afunc_file);
+		[fmri_p,fmri_n,fmri_e] = fileparts(fmri_nii);
+		afmri_nii = fullfile(fmri_p,['a' fmri_n fmri_e]);
+		copyfile(fmri_nii,afmri_nii);
 		return
 		
 	otherwise
@@ -33,16 +32,11 @@ switch params.slorder
 		
 end
 
-
 % Call the SPM routine
-tr = params.tr;
-ta = params.tr - params.tr/nslices;
-spm_slice_timing(func_vols,slorder,1,[ta/nslices-1 tr-ta],'a');
+ta = tr - tr/nslices;
+spm_slice_timing(fmri_nii,slorder,1,[ta/nslices-1 tr-ta],'a');
 
-
-% Filename for slice time corrected images. The file doesn't
-% exist, so we have to predict its name
-clear afunc_filename
-[func_p,func_n,func_e] = fileparts(func_file);
-afunc_file = fullfile(func_p,['a' func_n func_e]);
+% Filename for slice time corrected images
+[fmri_p,fmri_n,fmri_e] = fileparts(fmri_nii);
+afmri_nii = fullfile(fmri_p,['a' fmri_n fmri_e]);
 
