@@ -1,11 +1,8 @@
-function [FD,DVARS,badvols] = ...
-	volume_quality( ...
+function [FD,DVARS,badvols] = volume_quality( ...
 	out_dir, ...
-	meanfmri_file, ...
-	fmri_file, ...
-	rp_file, ...
-	FDthresh, ...
-	DVARSthresh ...
+	meanfmri_nii, ...
+	fmri_nii, ...
+	rp_txt ...
 	)
 
 
@@ -23,7 +20,7 @@ function [FD,DVARS,badvols] = ...
 %     Mt * X0 = M * Mtm1 * X0
 %     (Mt*X0) * inv(Mtm1*X0) = M = Mt * X0 * inv(X0) * inv(Mtm1) = Mt/Mtm1
 
-rp = load(rp_file);
+rp = load(rp_txt);
 nvol = size(rp,1);
 
 % Initialize some variables used for the Power method
@@ -61,7 +58,7 @@ FD(1) = nan;
 %% DVARS
 
 % Use mean fMRI to get brain voxel mask
-Vmean = spm_vol(meanfmri_file);
+Vmean = spm_vol(meanfmri_nii);
 Ymean = spm_read_vols(Vmean);
 threshold = spm_antimode(Ymean(:));
 mask = Ymean > threshold;
@@ -69,11 +66,11 @@ mask = Ymean > threshold;
 % Frame by frame RMS difference in voxel intensities, percent change units
 % relative to the mean intensity of the brain. Compute for each volume
 % separately to save loading the whole fmri into memory
-V1 = spm_vol([fmri_file ',1']);
+V1 = spm_vol([fmri_nii ',1']);
 Y1 = spm_read_vols(V1);
 DVARS = zeros(nvol,1);
 for t = 2:nvol
-	Vt = spm_vol([fmri_file ',' num2str(t)]);
+	Vt = spm_vol([fmri_nii ',' num2str(t)]);
 	spm_check_orientations([V1;Vt]);
 	Yt = spm_read_vols(Vt);
 	DVARS(t) = 100  ./ mean(Ymean(mask)) .* sqrt(mean( (Yt(mask)-Y1(mask)).^2 ));
