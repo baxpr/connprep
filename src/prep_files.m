@@ -1,31 +1,26 @@
-function [coregmat_file,deffwd_file,ct1_file,wgm_file,wcseg_file,func_file,roi_file] = ...
-	prep_files( ...
-	out_dir,coregmat_file,deffwd_file,ct1_file,wgm_file,wcseg_file,func_file,roi_file)
+function [fmri_nii,mt1_nii,deffwd_nii,gray_nii,white_nii,csf_nii] = prep_files( ...
+	out_dir,fmri_niigz,mt1_niigz,deffwd_niigz,gray_niigz,white_niigz,csf_niigz)
 
-copyfile(coregmat_file,[out_dir '/coregmat.txt']);
-coregmat_file = [out_dir '/coregmat.txt'];
+copyfile(fmri_niigz,[out_dir '/fmri.nii.gz']);
+system(['gunzip -f ' out_dir '/fmri.nii.gz']);
+fmri_nii = [out_dir '/fmri.nii'];
 
-copyfile(wgm_file,[out_dir '/wgm.nii.gz']);
-system(['gunzip -f ' out_dir '/wgm.nii.gz']);
-wgm_file = [out_dir '/wgm.nii'];
+copyfile(mt1_niigz,[out_dir '/mt1.nii.gz']);
+system(['gunzip -f ' out_dir '/mt1.nii.gz']);
+mt1_nii = [out_dir '/mt1.nii'];
 
-copyfile(ct1_file,[out_dir '/ct1.nii.gz']);
-system(['gunzip -f ' out_dir '/ct1.nii.gz']);
-ct1_file = [out_dir '/ct1.nii'];
-
-copyfile(wcseg_file,[out_dir '/wcseg.nii.gz']);
-system(['gunzip -f ' out_dir '/wcseg.nii.gz']);
-wcseg_file = [out_dir '/wcseg.nii'];
-
-copyfile(deffwd_file,[out_dir '/y_deffwd.nii.gz']);
+copyfile(deffwd_niigz,[out_dir '/y_deffwd.nii.gz']);
 system(['gunzip -f ' out_dir '/y_deffwd.nii.gz']);
-deffwd_file = [out_dir '/y_deffwd.nii'];
+deffwd_nii = [out_dir '/y_deffwd.nii'];
 
-copyfile(func_file,[out_dir '/func.nii.gz']);
-system(['gunzip -f ' out_dir '/func.nii.gz']);
-func_file = [out_dir '/func.nii'];
+copyfile(gray_niigz,[out_dir '/gray.nii.gz']);
+system(['gunzip -f ' out_dir '/gray.nii.gz']);
+gray_nii = [out_dir '/gray.nii'];
 
-copyfile(roi_file,[out_dir '/roi_labels.nii.gz']);
-system(['gunzip -f ' out_dir '/roi_labels.nii.gz']);
-roi_file = [out_dir '/roi_labels.nii'];
+copyfile(white_niigz,[out_dir '/white.nii.gz']);
+system(['gunzip -f ' out_dir '/white.nii.gz']);
+white_nii = [out_dir '/white.nii'];
 
+copyfile(csf_niigz,[out_dir '/csf.nii.gz']);
+system(['gunzip -f ' out_dir '/csf.nii.gz']);
+csf_nii = [out_dir '/csf.nii'];
