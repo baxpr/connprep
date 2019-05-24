@@ -30,7 +30,7 @@ disp('File prep')
 
 %% Drop unwanted volumes
 fprintf('Drop volumes from %s\n',fmri_nii);
-dfmri_nii = drop_volumes(fmri_nii,params);
+dfmri_nii = drop_volumes(fmri_nii,num_initial_vols_to_drop,num_vols_to_analyze);
 
 
 %% Slice timing correction
