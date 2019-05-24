@@ -49,10 +49,14 @@ fprintf('Realignment of %s\n',adfmri_nii);
 [radfmri_nii,meanradfmri_nii,rp_txt] = realignment(adfmri_nii);
 
 
+%% Make masked anat
+[mmt1_nii,mask_nii] = mask_anat(mt1_nii,gray_nii,white_nii,csf_nii);
+
+
 %% Coregister to anat
-fprintf('Coregister:\n    %s\n    %s\n',meanradfmri_nii,mt1_nii)
+fprintf('Coregister:\n    %s\n    %s\n',meanradfmri_nii,mmt1_nii)
 [cradfmri_nii,cmeanradfmri_nii] = coregister( ...
-	radfmri_nii,meanradfmri_nii,mt1_nii);
+	radfmri_nii,meanradfmri_nii,mmt1_nii);
 
 
 %% Reslice images to native space post-realignment
