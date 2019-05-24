@@ -55,12 +55,16 @@ fprintf('Coregister:\n    %s\n    %s\n',meanradfmri_nii,mt1_nii)
 	radfmri_nii,meanradfmri_nii,mt1_nii);
 
 
+%% Reslice images to native space post-realignment
+ncradfmri_nii = reslice(cradfmri_nii,cmeanradfmri_nii);
+
+
 %% Compute FD, DVARS
 disp('Volume quality')
-[FD,DVARS] = volume_quality(out_dir,cmeanradfmri_nii,cradfmri_nii,rp_txt);
+[FD,DVARS] = volume_quality(out_dir,cmeanradfmri_nii,ncradfmri_nii,rp_txt);
 
 
-%% Warp T1 and gray to MNI space for testing
+%% Warp T1 and gray to MNI space
 wmt1_nii = warp_images(deffwd_nii,mt1_nii, ...
 	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
 wgray_nii = warp_images(deffwd_nii,gray_nii, ...
@@ -69,11 +73,11 @@ wgray_nii = warp_images(deffwd_nii,gray_nii, ...
 
 %% Warp fMRI to MNI space
 fprintf('Warping:\n    %s\n    %s\n',cmeanradfmri_nii,cradfmri_nii);
-wmeanfmri_nii = warp_images(deffwd_file,cmeanradfmri_nii, ...
+wcmeanradfmri_nii = warp_images(deffwd_nii,cmeanradfmri_nii, ...
 	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
-wfmri_nii = warp_images(deffwd_file,cradfmri_nii, ...
+wcradfmri_nii = warp_images(deffwd_nii,cradfmri_nii, ...
 	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
-coreg_check(out_dir,wmeanfmri_nii,wgray_nii);
+coreg_check(out_dir,wcmeanradfmri_nii,wgray_nii);
 
 
 %% Process fMRI: filter, extract signals, compute connectivity
