@@ -72,7 +72,7 @@ disp('Volume quality')
 wmt1_nii = warp_images(deffwd_nii,mt1_nii, ...
 	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
 wgray_nii = warp_images(deffwd_nii,gray_nii, ...
-	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
+	[spm('dir') '/tpm/TPM.nii'],1,out_dir);
 
 
 %% Warp fMRI to MNI space
