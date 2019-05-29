@@ -1,6 +1,4 @@
-function make_pdf(out_dir)
-
-magick_path = '/usr/local/bin';
+function make_pdf(out_dir,magick_path)
 
 system( [ ...
 	'cd ' out_dir ' && ' ...
