@@ -2,7 +2,7 @@
 
 # singularity pull shub://baxpr/connprep:v1.0.0
 
-# Matlab can't handle .. in paths so we move up a directory
+# Binding fails with .. in paths so we move up a directory
 cd ..
 
 singularity run --cleanenv \
