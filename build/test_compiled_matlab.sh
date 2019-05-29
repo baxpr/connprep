@@ -1,11 +1,22 @@
 #!/bin/bash
 
 bash run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function connprep \
-../OUTPUTS \
-../INPUTS/t1.nii.gz \
-../INPUTS/seg.nii.gz \
-../INPUTS/fmri.nii.gz \
-UNK_PROJ \
-600000000001 \
-600000000001 \
-50362
+num_initial_vols_to_drop 0 \
+num_vols_to_analyze all \
+bandpasslo_hz 0.01 \
+bandpasshi_hz 0.10 \
+mot_PCs 6 \
+motderiv_PCs 6 \
+wmcsf_PCs 6 \
+slorder none \
+fmri_niigz ../INPUTS/fmri.nii.gz \
+mt1_niigz ../INPUTS/mt1.nii.gz \
+deffwd_niigz ../INPUTS/y_t1.nii.gz \
+gray_niigz ../INPUTS/p1t1.nii.gz \
+white_niigz ../INPUTS/p2t1.nii.gz \
+csf_niigz ../INPUTS/p3t1.nii.gz \
+project UNK_PROJ \
+subject UNK_SUBJ \
+session UNK_SESS \
+scan UNK_SCAN \
+out_dir ../OUTPUTS
