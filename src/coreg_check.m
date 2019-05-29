@@ -21,8 +21,10 @@ function edge_nii = coreg_check( ...
 [~,n,e] = fileparts(overlay_file);
 edge_nii = fullfile(out_dir,['edge_' n e]);
 
-% Load the anat image
+% Smooth and load the anat image
 Vover = spm_vol(overlay_file);
+spm_smooth(Vover,[out_dir '/smover.nii'],[4 4 4]);
+Vover = spm_vol([out_dir '/smover.nii']);
 Yover = spm_read_vols(Vover);
 if ~isempty(threshold)
 	Yover = double(Yover > threshold);
@@ -33,6 +35,7 @@ Yedge = canny(Yover);
 Vedge = rmfield(Vover,'pinfo');
 Vedge.fname = edge_nii;
 spm_write_vol(Vedge,Yedge);
+
 
 % Show the functional image
 spm_check_registration(bkgnd_file);
