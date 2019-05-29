@@ -6,3 +6,4 @@ localdocker.sh
 *.simg
 *.gz
 spm12*
+.DS_Store
