@@ -2,35 +2,21 @@ Bootstrap: docker
 From: ubuntu:16.04
 
 %help
-Functional MRI QA pipeline. Usage:
-
-  singularity run --cleanenv \
-    --home `pwd`/INPUTS \
-    --bind INPUTS:/INPUTS \
-    --bind OUTPUTS:/OUTPUTS \
-    container.simg \
-    /OUTPUTS \
-    INPUTS/t1.nii.gz \
-    INPUTS/seg.nii.gz \
-    INPUTS/fmri.nii.gz \
-    PROJ_LABEL \
-    SUBJ_LABEL \
-    SESS_LABEL \
-    SCAN_LABEL
+Functional MRI connectivity preprocessing pipeline. Info and usage:
+/opt/connprep/README.md
+/opt/connprep/build/test_sing_container.sh
 
 
 %setup
-  mkdir -p ${SINGULARITY_ROOTFS}/opt/fmriqa
+  mkdir -p ${SINGULARITY_ROOTFS}/opt/connprep
 
 
 %files
-  bin                          /opt/fmriqa
-  src                          /opt/fmriqa
-  README.md                    /opt/fmriqa
-  compile_matlab.sh            /opt/fmriqa
-  spm_make_standalone_local.m  /opt/fmriqa
-  test_sing_container.sh       /opt/fmriqa
-  
+  bin                          /opt/connprep
+  src                          /opt/connprep
+  build                        /opt/connprep
+  README.md                    /opt/connprep
+
  
 %labels
   Maintainer baxter.rogers@vanderbilt.edu
@@ -58,9 +44,10 @@ Functional MRI QA pipeline. Usage:
   # Singularity-hub doesn't work with github LFS (it gets the pointer info instead 
   # of the actual file) so we get the compiled matlab executable via direct download.
   # Also need a "dry run" of SPM executable to avoid directory creation errors later.
-  rm /opt/fmriqa/bin/spm12.ctf
-  wget -nv -P /opt/fmriqa/bin https://github.com/baxpr/fmriqa/raw/master/bin/spm12.ctf
-  /opt/fmriqa/bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 quit
+  rm /opt/connprep/bin/spm12.ctf
+  wget -nv -P /opt/fmriqa/bin https://github.com/baxpr/connprep/raw/master/bin/spm12.ctf
+  /opt/connprep/bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 quit
+
 
 %environment
   # We don't need to set the Matlab library path here, because Matlab's
@@ -70,6 +57,6 @@ Functional MRI QA pipeline. Usage:
 %runscript
   xvfb-run --server-num=$(($$ + 99)) \
   --server-args='-screen 0 1600x1200x24 -ac +extension GLX' \
-  bash /opt/fmriqa/bin/run_spm12.sh \
-  /usr/local/MATLAB/MATLAB_Runtime/v92 function fmriqa "$@"
+  bash /opt/connprep/bin/run_spm12.sh \
+  /usr/local/MATLAB/MATLAB_Runtime/v92 function connprep "$@"
 
