@@ -1,10 +1,10 @@
 #!/bin/sh
 
 singularity run --cleanenv \
-  --home `pwd`/INPUTS \
-  --bind INPUTS:/INPUTS \
-  --bind OUTPUTS:/OUTPUTS \
-  container.simg \
+  --home `pwd`/../INPUTS \
+  --bind ../INPUTS:/INPUTS \
+  --bind ../OUTPUTS:/OUTPUTS \
+  baxpr-connprep-master-v1.0.0.simg \
   num_initial_vols_to_drop 0 \
   num_vols_to_analyze all \
   bandpasslo_hz 0.01 \
