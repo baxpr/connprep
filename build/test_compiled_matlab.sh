@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Fix imagemagick policy to allow PDF output. See https://usn.ubuntu.com/3785-1/
+sed -i 's/rights="none" pattern="PDF"/rights="read | write" pattern="PDF"/' \
+/etc/ImageMagick-6/policy.xml
+
+# Run the compiled matlab  
 bash ../bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function connprep \
 num_initial_vols_to_drop 0 \
 num_vols_to_analyze all \
