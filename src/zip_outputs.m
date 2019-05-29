@@ -15,5 +15,5 @@ system([ ...
 
 
 % Clean up intermediate files
-delete([out_dir '/*.png']);
-delete([out_dir '/*.nii']);
+%delete([out_dir '/*.png']);
+%delete([out_dir '/*.nii']);

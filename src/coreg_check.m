@@ -1,7 +1,8 @@
-function coreg_check( ...
+function edge_nii = coreg_check( ...
 	out_dir, ...
 	bkgnd_file, ...
-	overlay_file ...
+	overlay_file, ...
+	threshold ...
     )
 
 % Make a nice at-a-glance image to check registration between structural
@@ -18,16 +19,19 @@ function coreg_check( ...
 
 % Edge image filename
 [~,n,e] = fileparts(overlay_file);
-edge_file = fullfile(out_dir,['edge_' n e]);
+edge_nii = fullfile(out_dir,['edge_' n e]);
 
 % Load the anat image
 Vover = spm_vol(overlay_file);
 Yover = spm_read_vols(Vover);
+if ~isempty(threshold)
+	Yover = double(Yover > threshold);
+end
 
 % Compute the edge image and save
 Yedge = canny(Yover);
 Vedge = rmfield(Vover,'pinfo');
-Vedge.fname = edge_file;
+Vedge.fname = edge_nii;
 spm_write_vol(Vedge,Yedge);
 
 % Show the functional image
@@ -35,7 +39,7 @@ spm_check_registration(bkgnd_file);
 
 % Overlay the anat edge image
 spm_orthviews('Xhairs','off');
-spm_orthviews('addcolouredimage',1,edge_file,[1 0 0]);
+spm_orthviews('addcolouredimage',1,edge_nii,[1 0 0]);
 spm_orthviews('Reposition',[6 0 0]);
 
 % Print
