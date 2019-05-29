@@ -1,4 +1,6 @@
 #!/bin/sh
+#
+# singularity pull shub://baxpr/connprep:v1.0.0
 
 singularity run --cleanenv \
   --home `pwd`/../INPUTS \
