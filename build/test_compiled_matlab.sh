@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bash run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function connprep \
+bash ../bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function connprep \
 num_initial_vols_to_drop 0 \
 num_vols_to_analyze all \
 bandpasslo_hz 0.01 \
