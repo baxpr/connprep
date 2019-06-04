@@ -12,9 +12,9 @@ Produce preprocessed fMRI images ready for connectivity analysis.
 1. Compute volume quality metrics FD, DVARS.
 1. Reslice realigned fMRI to native space, and also warp to MNI space using CAT12 transform.
 1. Remove confounds from the native and MNI space fMRIs by simultaneous regression. Defaults:
-    a. 0.01 - 0.10 Hz bandpass filter
-	a. 6 estimated motion parameters and their first differences
-	a. 6 principal components from the white matter + CSF compartment
+    - 0.01 - 0.10 Hz bandpass filter
+	- 6 estimated motion parameters and their first differences
+	- 6 principal components from the white matter + CSF compartment
 1. Repeat the confound removal, additionally removing the mean signal of the gray matter compartment.
 
 ## Inputs
