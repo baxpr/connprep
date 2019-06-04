@@ -41,20 +41,20 @@ Produce preprocessed fMRI images ready for connectivity analysis.
 
 ## Outputs
 
-    connprep.pdf                          Processing report
-    rp_adfmri.txt                         Realignment parameters
-    FD.txt                                Framewise displacement
-    DVARS.txt                             Framewise noise
-    filtered_keepgm_noscrub.nii.gz        Filtered data, native space, gray matter signal retained
-    wfiltered_keepgm_noscrub.nii.gz       Filtered data, MNI space, gray matter signal retained
-    filtered_removegm_noscrub.nii.gz      Filtered data, native space, gray matter signal removed
-    wfiltered_removegm_noscrub.nii.gz     Filtered data, MNI space, gray matter signal removed
-    meanadfmri.nii.gz                     Mean fMRI, native space
-	wmeanadfmri.nii.gz                    Mean fMRI, MNI space
-    stats_keepgm_noscrub.txt              Processing info when gray matter signal retained
-    stats_removegm_noscrub.txt            Processing info when gray matter signal removed
-    gm_mask.nii.gz                        Native space gray matter mask
-    wmcsf_mask.nii.gz                     Native space white matter/CSF mask
-    confounds_keepgm_noscrub.txt          Confounds matrix when gray matter signal retained
-    confounds_removegm_noscrub.txt        Confounds matrix  when gray matter signal removed
+    connprep.pdf                               Processing report
+    rp_adfmri.txt                              Realignment parameters
+    FD.txt                                     Framewise displacement
+    DVARS.txt                                  Framewise noise
+    filtered_keepgm_noscrub_nadfmri.nii.gz     Filtered data, native space, gray matter signal retained
+    filtered_keepgm_noscrub_wadfmri.nii.gz     Filtered data, MNI space, gray matter signal retained
+    filtered_removegm_noscrub_nadfmri.nii.gz   Filtered data, native space, gray matter signal removed
+    filtered_removegm_noscrub_wadfmri.nii.gz   Filtered data, MNI space, gray matter signal removed
+    meanadfmri.nii.gz                          Mean fMRI, native space
+	wmeanadfmri.nii.gz                         Mean fMRI, MNI space
+    stats_keepgm_noscrub.txt                   Processing info when gray matter signal retained
+    stats_removegm_noscrub.txt                 Processing info when gray matter signal removed
+    gm_mask.nii.gz                             Native space gray matter mask
+    wmcsf_mask.nii.gz                          Native space white matter/CSF mask
+    confounds_keepgm_noscrub.txt               Confounds matrix when gray matter signal retained
+    confounds_removegm_noscrub.txt             Confounds matrix  when gray matter signal removed
 
