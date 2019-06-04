@@ -224,7 +224,8 @@ Rpost = ( corr(fmriYc(:,randkeeps)) );
 
 % Write out the filtered unsmoothed images
 fmriYc = reshape(fmriYc',o);
-filtered_fmri_nii = fullfile(out_dir,['filtered_' filetag '.nii']);
+[~,n,e] = fileparts(fmri_nii);
+filtered_fmri_nii = fullfile(out_dir,['filtered_' filetag '_' n e]);
 for v = 1:numel(fmriV)
     thisV = rmfield(fmriV(v),'pinfo');
     thisV.dt(1) = spm_type('float32');
