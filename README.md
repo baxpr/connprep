@@ -19,21 +19,42 @@ Produce preprocessed fMRI images ready for connectivity analysis.
 
 ## Inputs
 
+	num_initial_vols_to_drop      0       Number of initial volumes to drop
+	num_vols_to_analyze           all     Total number of volumes to analyze
+	bandpasslo_hz                 0.01    Low edge of bandpass filter in Hz
+	bandpasshi_hz                 0.10    High edge of bandpass filter
+	mot_PCs                       6       Number of PCs of motion params to remove
+	motderiv_PCs                  6       Same for motion derivatives
+	wmcsf_PCs                     6       Same for white matter/CSF compartment
+	slorder                       none    Slice timing correction, SPM12 nomenclature 
+	fmri_niigz                            fMRI images, 4D Nifti
+	mt1_niigz                             T1 structural
+	deffwd_niigz                          Forward deformation of T1 to MNI
+	gray_niigz                            Gray matter volume fraction
+	white_niigz                           White matter volume fraction
+	csf_niigz                             CSF volume fraction
+	project                               XNAT project label
+	subject                               XNAT subject label
+	session                               XNAT session label
+	scan                                  XNAT scan label
+
+
 ## Outputs
 
-
-Output in native space and MNI space (cat12 transform). Unsmoothed only.
-
-With and without mean gray matter signal removal.
-
-No scrubbing.
-
-Follow new fmriqa v4.2 for SPM setup.
-
-Pass processing options at command line instead of param file.
-
-Get TR from pixdim[4] in Niftis. Make a really obvious report of it in PDF and do some basic error checking (some people have store msec instead of sec). dcm2niix v1.0.20190410 seems fine for this with both DICOM and PAR/REC.
-
-Show Yeo 7 connectivity maps for QA: masimatlab/trunk/xnatspiders/matlab/fmri_conncalc_v1_1_0/code/make_network_maps.m
-Also show the 7x7 connectivity matrix for those.
+    connprep.pdf                          Processing report
+    rp_adfmri.txt                         Realignment parameters
+    FD.txt                                Framewise displacement
+    DVARS.txt                             Framewise noise
+    filtered_keepgm_noscrub.nii.gz        Filtered data, native space, gray matter signal retained
+    wfiltered_keepgm_noscrub.nii.gz       Filtered data, MNI space, gray matter signal retained
+    filtered_removegm_noscrub.nii.gz      Filtered data, native space, gray matter signal removed
+    wfiltered_removegm_noscrub.nii.gz     Filtered data, MNI space, gray matter signal removed
+    meanadfmri.nii.gz                     Mean fMRI, native space
+	wmeanadfmri.nii.gz                    Mean fMRI, MNI space
+    stats_keepgm_noscrub.txt              Processing info when gray matter signal retained
+    stats_removegm_noscrub.txt            Processing info when gray matter signal removed
+    gm_mask.nii.gz                        Native space gray matter mask
+    wmcsf_mask.nii.gz                     Native space white matter/CSF mask
+    confounds_keepgm_noscrub.txt          Confounds matrix when gray matter signal retained
+    confounds_removegm_noscrub.txt        Confounds matrix  when gray matter signal removed
 
