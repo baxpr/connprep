@@ -11,7 +11,7 @@ fmriY = reshape(fmriY,[],o(4))';
 grayV = spm_vol(gray_nii);
 grayY = spm_read_vols(grayV);
 meanfmri = mean(fmriY,1);
-globalmean = mean( meanfmri(:).*grayY / sum(grayY(:)) );
+globalmean = mean( meanfmri(:).*grayY(:) / sum(grayY(:)) );
 fmriY = 100 * fmriY / globalmean;
 
 % Regress out the confounds from the images
