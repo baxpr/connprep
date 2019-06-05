@@ -21,6 +21,9 @@ function connprep_main( ...
 	out_dir ...
 	)
 
+%% SPM init
+spm_jobman('initcfg')
+
 
 %% Identify the MNI space geometry we will use for output images
 mnigeom_nii = [spm('dir') '/canonical/avg152T1.nii'];
