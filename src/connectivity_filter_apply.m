@@ -1,5 +1,5 @@
 function filtered_fmri_nii = connectivity_filter_apply( ...
-	out_dir,fmri_nii,confounds_txt,filetag)
+	out_dir,fmri_nii,gray_nii,confounds_txt,filetag)
 
 % Read unsmoothed images
 fmriV = spm_vol(char(fmri_nii));
@@ -7,10 +7,11 @@ fmriY = spm_read_vols(fmriV);
 o = size(fmriY);
 fmriY = reshape(fmriY,[],o(4))';
 
-% Scale image data to percent of global mean
+% Scale mean gray matter value to 100
+grayV = spm_vol(gray_nii);
+grayY = spm_read_vols(grayV);
 meanfmri = mean(fmriY,1);
-thresh = spm_antimode(meanfmri);
-globalmean = mean(meanfmri(meanfmri>thresh));
+globalmean = mean( meanfmri(:).*grayY / sum(grayY(:)) );
 fmriY = 100 * fmriY / globalmean;
 
 % Regress out the confounds from the images

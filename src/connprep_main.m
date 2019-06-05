@@ -22,6 +22,9 @@ function connprep_main( ...
 	)
 
 
+%% Identify the MNI space geometry we will use for output images
+mnigeom_nii = [spm('dir') '/canonical/avg152T1.nii'];
+
 
 %% Copy files to working directory with consistent names and unzip
 disp('File prep')
@@ -50,11 +53,11 @@ fprintf('Realignment of %s\n',adfmri_nii);
 [radfmri_nii,meanradfmri_nii,rp_txt] = realignment(adfmri_nii);
 
 
-%% Make masked anat for coreg
+%% Make masked anat for coreg in T1 native space
 [mmt1_nii,mask_nii] = mask_anat(mt1_nii,gray_nii,white_nii,csf_nii);
 
 
-%% Coregister to anat
+%% Coregister fmri to anat
 fprintf('Coregister:\n    %s\n    %s\n',meanradfmri_nii,mmt1_nii)
 [cradfmri_nii,cmeanradfmri_nii] = coregister( ...
 	radfmri_nii,meanradfmri_nii,mmt1_nii);
@@ -69,30 +72,29 @@ disp('Volume quality')
 [FD,DVARS] = volume_quality(out_dir,cmeanradfmri_nii,ncradfmri_nii,rp_txt);
 
 
-%% Warp structural stuff to MNI space
-wmt1_nii = warp_images(deffwd_nii,mt1_nii, ...
-	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
-wgray_nii = warp_images(deffwd_nii,gray_nii, ...
-	[spm('dir') '/tpm/TPM.nii'],1,out_dir);
-wmask_nii = warp_images(deffwd_nii,mask_nii, ...
-	[spm('dir') '/canonical/avg152T1.nii'],0,out_dir);
-
-
 %% Warp fMRI to MNI space
+% Start with the registered, but un-resliced, images to minimize
+% interpolation steps
 fprintf('Warping:\n    %s\n    %s\n',cmeanradfmri_nii,cradfmri_nii);
 wcmeanradfmri_nii = warp_images(deffwd_nii,cmeanradfmri_nii, ...
-	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
+	mnigeom_nii,1,out_dir);
 wcradfmri_nii = warp_images(deffwd_nii,cradfmri_nii, ...
-	[spm('dir') '/canonical/avg152T1.nii'],1,out_dir);
+	mnigeom_nii,1,out_dir);
 
 
 %% Check registration
-wedge_nii = coreg_check(out_dir,wcmeanradfmri_nii,wgray_nii,0.5);
+% First warp GM to high resolution space to get better edges
+wgrayedge_nii = warp_images(deffwd_nii,gray_nii, ...
+	[spm('dir') '/tpm/TPM.nii'],1,out_dir);
+wedge_nii = coreg_check(out_dir,wcmeanradfmri_nii,wgrayedge_nii,0.5);
 
 
 %% Process fMRI: filter, warp
 
 disp('Filter')
+
+% First warp gray matter to MNI for masking
+wgray_nii = warp_images(deffwd_nii,gray_nii,mnigeom_nii,1,out_dir);
 
 % Remove gray matter signal, no scrub
 [filtered_removegm_nii,confounds_removegm_txt] = connectivity_filter( ...
@@ -103,7 +105,7 @@ disp('Filter')
 	1, project, subject, session, [scan ' Native'] ...
 	);
 wfiltered_removegm_nii = connectivity_filter_apply( ...
-	out_dir, wcradfmri_nii, confounds_removegm_txt, 'removegm_noscrub');
+	out_dir,wcradfmri_nii,wgray_nii,confounds_removegm_txt,'removegm_noscrub');
 
 
 % Keep gray matter signal, no scrub
@@ -115,11 +117,14 @@ wfiltered_removegm_nii = connectivity_filter_apply( ...
 	0, project, subject, session, [scan ' Native'] ...
 	);
 wfiltered_keepgm_nii = connectivity_filter_apply( ...
-	out_dir, wcradfmri_nii, confounds_keepgm_txt, 'keepgm_noscrub');
+	out_dir,wcradfmri_nii,wgray_nii,confounds_keepgm_txt,'keepgm_noscrub');
 
 
 
 %% Make output PDF
+% First warp mask to MNI for QA images
+wmask_nii = warp_images(deffwd_nii,mask_nii,mnigeom_nii,0,out_dir);
+
 make_network_maps( ...
 	out_dir, ...
 	wfiltered_removegm_nii, ...

@@ -191,6 +191,11 @@ fmriY = spm_read_vols(fmriV);
 o = size(fmriY);
 fmriY = reshape(fmriY,[],o(4))';
 
+% Scale mean gray matter value to 100
+meanfmri = mean(fmriY,1);
+globalmean = mean( meanfmri(:).*grayY / sum(grayY(:)) );
+fmriY = 100 * fmriY / globalmean;
+
 % Scale image data to percent of global mean
 meanfmri = mean(fmriY,1);
 thresh = spm_antimode(meanfmri);
