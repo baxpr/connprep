@@ -144,7 +144,7 @@ make_pdf(out_dir,magick_path);
 
 
 %% Mask MNI space images to save space
-mask_mni({wfiltered_removegm_nii,wfiltered_keepgm_nii});
+mask_mni(out_dir,{wfiltered_removegm_nii,wfiltered_keepgm_nii});
 
 
 %% Zip output images

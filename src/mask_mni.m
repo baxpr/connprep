@@ -1,4 +1,4 @@
-function mask_mni(fmri_niis)
+function mask_mni(out_dir,fmri_niis)
 
 for f = 1:length(fmri_niis)
 
