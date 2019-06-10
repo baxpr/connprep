@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# singularity pull shub://baxpr/connprep:v2.1.0
+# singularity pull shub://baxpr/connprep:v2.0.0
 
 # Binding fails with .. in paths so we move up a directory
 cd ..
@@ -9,7 +9,7 @@ singularity run --cleanenv \
   --home `pwd`/INPUTS \
   --bind INPUTS:/INPUTS \
   --bind OUTPUTS:/OUTPUTS \
-  build/baxpr-connprep-master-v2.1.0.simg \
+  build/baxpr-connprep-master-v2.0.0.simg \
   num_initial_vols_to_drop 0 \
   num_vols_to_analyze all \
   bandpasslo_hz 0.01 \
