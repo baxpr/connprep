@@ -20,6 +20,7 @@ deffwd_niigz ../INPUTS/y_t1.nii.gz \
 gray_niigz ../INPUTS/p1t1.nii.gz \
 white_niigz ../INPUTS/p2t1.nii.gz \
 csf_niigz ../INPUTS/p3t1.nii.gz \
+mnigeom_nii TPM.nii \
 project UNK_PROJ \
 subject UNK_SUBJ \
 session UNK_SESS \
