@@ -6,6 +6,9 @@ function connprep_main(inp)
 %% SPM init
 spm_jobman('initcfg')
 
+%% Get reference geometry
+mnigeom_nii = which(inp.mnigeom_nii);
+
 
 %% Copy files to working directory with consistent names and unzip
 disp('File prep')
@@ -57,15 +60,15 @@ disp('Volume quality')
 % interpolation steps
 fprintf('Warping:\n    %s\n    %s\n',cmeanradfmri_nii,cradfmri_nii);
 wcmeanradfmri_nii = warp_images(deffwd_nii,cmeanradfmri_nii, ...
-	inp.mnigeom_nii,1,inp.out_dir);
+	mnigeom_nii,1,inp.out_dir);
 wcradfmri_nii = warp_images(deffwd_nii,cradfmri_nii, ...
-	inp.mnigeom_nii,1,inp.out_dir);
+	mnigeom_nii,1,inp.out_dir);
 
 
 %% Check registration
 % First warp GM to high resolution space to get better edges
 wgrayedge_nii = warp_images(deffwd_nii,gray_nii, ...
-	[spm('dir') '/tpm/TPM.nii'],1,out_dir);
+	[spm('dir') '/tpm/TPM.nii'],1,inp.out_dir);
 wedge_nii = coreg_check(inp.out_dir,wcmeanradfmri_nii,wgrayedge_nii,0.5);
 
 
@@ -74,7 +77,7 @@ wedge_nii = coreg_check(inp.out_dir,wcmeanradfmri_nii,wgrayedge_nii,0.5);
 disp('Filter')
 
 % First warp gray matter to MNI for masking
-wgray_nii = warp_images(deffwd_nii,gray_nii,inp.mnigeom_nii,1,inp.out_dir);
+wgray_nii = warp_images(deffwd_nii,gray_nii,mnigeom_nii,1,inp.out_dir);
 
 % Remove gray matter signal, no scrub
 [filtered_removegm_nii,confounds_removegm_txt] = connectivity_filter( ...
@@ -103,7 +106,7 @@ wfiltered_keepgm_nii = connectivity_filter_apply( ...
 
 %% Make output PDF
 % First warp mask to MNI for QA images
-wmask_nii = warp_images(deffwd_nii,mask_nii,inp.mnigeom_nii,0,inp.out_dir);
+wmask_nii = warp_images(deffwd_nii,mask_nii,mnigeom_nii,0,inp.out_dir);
 
 make_network_maps( ...
 	inp.out_dir, ...
