@@ -11,14 +11,14 @@
 # The matlab version matters. If we compile with R2017a, it will only run under 
 # the R2017a Runtime.
 #
-# The SPM12 version also matters. The compilation code is written for r7487.
+# The SPM12 version also matters.
 
 
 # Where to find SPM12 on our compilation machine
-SPM_PATH=/wkdir/spm12_r7487
+SPM_PATH=/wkdir/src/external/spm12_r7771
 
 # We may need to add Matlab to the path on the compilation machine
-export PATH=/usr/local/MATLAB/R2017a/bin:${PATH}
+export PATH=/usr/local/MATLAB/R2019b/bin:${PATH}
 
 # SPM external stuff often causes issues with compilation. We don't need any of it 
 # here, so delete. Example: fieldtrip module has some compatibility functions that
