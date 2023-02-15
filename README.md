@@ -37,6 +37,12 @@ Produce preprocessed fMRI images ready for connectivity analysis.
 	subject                               XNAT subject label
 	session                               XNAT session label
 	scan                                  XNAT scan label
+    
+    # To use fmri that has already been motion corrected (in this case slice timing
+    # correction is also skipped):
+    skip_realignment                      Set 'true'
+    motparams                             Motion parameters text file
+    meanfmri_niigz                        Mean fmri from motion correction
 
 
 ## Outputs

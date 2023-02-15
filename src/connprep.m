@@ -31,8 +31,6 @@ addOptional(P,'subject','UNK_SUBJ');
 addOptional(P,'session','UNK_SESS');
 addOptional(P,'scan','UNK_SCAN');
 
-addOptional(P,'magick_path','/usr/bin');
-
 addOptional(P,'out_dir','/OUTPUTS');
 parse(P,varargin{:});
 

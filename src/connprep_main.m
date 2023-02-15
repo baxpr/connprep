@@ -131,7 +131,7 @@ make_network_maps( ...
 	inp.scan ...
 	)
 
-make_pdf(inp.out_dir,inp.magick_path);
+make_pdf(inp.out_dir);
 
 
 %% Mask MNI space images to save space
