@@ -1,5 +1,5 @@
 %% SPM12 needs to be in the path also
-addpath('.')
+addpath(genpath('.'))
 
 
 %% Previous way (with realignment)
