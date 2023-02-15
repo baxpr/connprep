@@ -41,7 +41,7 @@ Produce preprocessed fMRI images ready for connectivity analysis.
     # To use fmri that has already been motion corrected (in this case slice timing
     # correction is also skipped):
     skip_realignment                      Set 'true'
-    motparams                             Motion parameters text file
+    motparams                             Motion parameters text file (FSL format assumed)
     meanfmri_niigz                        Mean fmri from motion correction
 
 

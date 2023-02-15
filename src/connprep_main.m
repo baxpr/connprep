@@ -25,12 +25,14 @@ tr = get_tr(fmri_nii);
 
 
 %% If we supply motion-corrected data
-% Skip slice timing, and we require mot params and mean fmri to be supplied
+% Skip slice timing, and we require mot params and mean fmri to be
+% supplied. Mot params assumed FSL format (degrees).
 if strcmpi(inp.skip_realignment,'true')
     disp('NOTICE - Assuming motion corrected data, skipping slice timing')
     radfmri_nii = fmri_nii;
     meanradfmri_nii = meanfmri_nii;
     rp_txt = inp.motparams;
+    fslmotpar = 'true';
 
 else
 
@@ -43,7 +45,8 @@ else
     %% Realignment
     fprintf('Realignment of %s\n',adfmri_nii);
     [radfmri_nii,meanradfmri_nii,rp_txt] = realignment(adfmri_nii);
-
+    fslmotpar = 'false';
+    
 end
 
 
@@ -63,7 +66,7 @@ ncradfmri_nii = reslice(cradfmri_nii,cmeanradfmri_nii);
 
 %% Compute FD, DVARS
 disp('Volume quality')
-[FD,DVARS] = volume_quality(inp.out_dir,cmeanradfmri_nii,ncradfmri_nii,rp_txt);
+[FD,DVARS] = volume_quality(inp.out_dir,cmeanradfmri_nii,ncradfmri_nii,rp_txt,fslmotpar);
 
 
 %% Warp fMRI to MNI space
