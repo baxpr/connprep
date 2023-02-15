@@ -13,6 +13,10 @@ addOptional(P,'motderiv_PCs','6')
 addOptional(P,'wmcsf_PCs','6')
 addOptional(P,'slorder','none')
 
+addOptional(P,'skip_realignment','false')
+addOptional(P,'motparams','')
+addOptional(P,'meanfmri_niigz','')
+
 addOptional(P,'fmri_niigz','/INPUTS/fmri.nii.gz');
 addOptional(P,'mt1_niigz','/INPUTS/mt1.nii.gz');
 addOptional(P,'deffwd_niigz','/INPUTS/y_t1.nii.gz');

@@ -1,4 +1,4 @@
-function [fmri_nii,mt1_nii,deffwd_nii,gray_nii,white_nii,csf_nii] = ...
+function [fmri_nii,meanfmri_nii,mt1_nii,deffwd_nii,gray_nii,white_nii,csf_nii] = ...
 	prep_files(inp)
 
 copyfile(inp.fmri_niigz,[inp.out_dir '/fmri.nii.gz']);
@@ -24,3 +24,13 @@ white_nii = [inp.out_dir '/white.nii'];
 copyfile(inp.csf_niigz,[inp.out_dir '/csf.nii.gz']);
 system(['gunzip -f ' inp.out_dir '/csf.nii.gz']);
 csf_nii = [inp.out_dir '/csf.nii'];
+
+if ~isempty(inp.meanfmri_niigz)
+   copyfile(inp.meanfmri_niigz,[inp.out_dir '/meanfmri.nii.gz']);
+   system(['gunzip -f ' inp.out_dir '/meanfmri.nii.gz']);
+   meanfmri_nii = [inp.out_dir '/meanfmri.nii'];
+else
+    meanfmri_nii = '';
+end
+
+ 

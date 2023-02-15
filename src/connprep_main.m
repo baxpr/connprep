@@ -12,7 +12,7 @@ mnigeom_nii = which(inp.mnigeom_nii);
 
 %% Copy files to working directory with consistent names and unzip
 disp('File prep')
-[fmri_nii,mt1_nii,deffwd_nii,gray_nii,white_nii,csf_nii] = prep_files(inp);
+[fmri_nii,meanfmri_nii,mt1_nii,deffwd_nii,gray_nii,white_nii,csf_nii] = prep_files(inp);
 
 
 %% Drop unwanted volumes
@@ -24,16 +24,27 @@ dfmri_nii = drop_volumes(fmri_nii,inp.num_initial_vols_to_drop,inp.num_vols_to_a
 tr = get_tr(fmri_nii);
 
 
-%% Slice timing correction
-% Slice timing correction interpolates across time, possibly polluting high
-% quality vols with artifact signal from nearby vols with high FD/DVARS
-fprintf('Slice timing correction "%s" on %s\n',inp.slorder,dfmri_nii);
-adfmri_nii = slice_timing_correction(dfmri_nii,tr,inp.slorder);
+%% If we supply motion-corrected data
+% Skip slice timing, and we require mot params and mean fmri to be supplied
+if strcmpi(inp.skip_realignment,'true')
+    disp('NOTICE - Assuming motion corrected data, skipping slice timing')
+    radfmri_nii = fmri_nii;
+    meanradfmri_nii = meanfmri_nii;
+    rp_txt = inp.motparams;
 
+else
 
-%% Realignment
-fprintf('Realignment of %s\n',adfmri_nii);
-[radfmri_nii,meanradfmri_nii,rp_txt] = realignment(adfmri_nii);
+    %% Slice timing correction
+    % Slice timing correction interpolates across time, possibly polluting high
+    % quality vols with artifact signal from nearby vols with high FD/DVARS
+    fprintf('Slice timing correction "%s" on %s\n',inp.slorder,dfmri_nii);
+    adfmri_nii = slice_timing_correction(dfmri_nii,tr,inp.slorder);
+
+    %% Realignment
+    fprintf('Realignment of %s\n',adfmri_nii);
+    [radfmri_nii,meanradfmri_nii,rp_txt] = realignment(adfmri_nii);
+
+end
 
 
 %% Make masked anat for coreg in T1 native space
