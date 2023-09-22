@@ -8,7 +8,9 @@ Produce preprocessed fMRI images ready for connectivity analysis.
 1. Get the TR (volume acquisition time) from pixdim[4] field of the Nifti header.
 1. Slice timing correction. Default: none.
 1. Head motion realignment (SPM12 two-stage) and production of mean fMRI.
-1. Rigid body coregistration of mean fMRI to T1 structural.
+1. Rigid body coregistration of mean fMRI to T1 structural. The registration target
+    is the provided T1 (commonly the bias-corrected T1 from CAT12) with everything 
+    but white/gray/CSF masked out - i.e. effectively skull-stripped.
 1. Compute volume quality metrics FD, DVARS.
 1. Reslice realigned fMRI to native space, and also warp to MNI space using CAT12 transform.
 1. Remove confounds from the native and MNI space fMRIs by simultaneous regression. Defaults:
